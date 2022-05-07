@@ -54,7 +54,6 @@
     })
 
     function addRipple(ele) {
-      console.log('enter logo')
       ele.classList.add('ripple')
       ele.classList.add('visited')
       setTimeout(function() {
@@ -69,7 +68,6 @@
         neighs.forEach(neigh => {
         const nEle = document.getElementById(neigh)
         if(!nEle.classList.contains('visited')) {
-          console.log('going')
           addRippleToNeigh(nEle)
         }
       })
