@@ -45,7 +45,7 @@
     setup()
     let box = document.querySelectorAll('.box')
     box.forEach(ele => {
-      ele.addEventListener('mousemove', function() {
+      ele.addEventListener('click', function() {
         addRippleToNeigh(ele)
         box.forEach(bo => {
           bo.classList.remove('visited')
