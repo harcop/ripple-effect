@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .row-box {
+      display: block;
+      margin: -4px;
+      padding: 0px;
+    }
+    .box {
+      width: 50px;
+      height: 50px;
+      background: skyblue;
+      border-radius: 5px;
+      display: inline-block;
+      margin:2px;
+      transition:background 50ms ease-in;
+    }
+    .ripple {
+      /* opacity: 0.6; */
+      background: red;
+    }
+    @keyframes ripple {
+      0% {
+        background: red;
+      }
+      100% {
+        background: yellow;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="main-box">
+    <!-- <div class="box"></div> -->
+  </div>
+
+  <script>
+
+    const gridSize = 5;
+    setup()
+    let box = document.querySelectorAll('.box')
+    box.forEach(ele => {
+      ele.addEventListener('click', function() {
+        addRippleToNeigh(ele)
+        box.forEach(bo => {
+          bo.classList.remove('visited')
+        }) 
+      })
+    })
+
+    function addRipple(ele) {
+      console.log('enter logo')
+      ele.classList.add('ripple')
+      ele.classList.add('visited')
+      setTimeout(function() {
+        ele.classList.remove('ripple')
+      }, 50)
+    }
+
+    function addRippleToNeigh(ele) {
+      addRipple(ele)
+      const neighs = getNeigh(ele);
+      setTimeout(function () {
+        neighs.forEach(neigh => {
+        const nEle = document.getElementById(neigh)
+        if(!nEle.classList.contains('visited')) {
+          console.log('going')
+          addRippleToNeigh(nEle)
+        }
+      })
+      }, 50)
+    }
+
+
+    function setup() {
+      let main_box = document.getElementById('main-box')
+      for(let i = 0; i < gridSize; i++) {
+        main_box.innerHTML += `<div id="${i}" class="row-box"></div>`
+        for(let j = 0; j < gridSize; j++) {
+          document.getElementById(`${i}`).innerHTML += `<div id="${i}${j}" class="box"></div>`
+        }
+      }
+    }
+
+    function getNeigh(ele) {
+      let id = ele.id
+      const [_y, _x] = id.split('')
+      const [y, x] = [Number(_y), Number(_x)]
+      const neigh = [];
+      const up = `${y-1}${x}`
+      const right = `${y}${x+1}`
+      const down = `${y+1}${x}`
+      const left = `${y}${x-1}`
+      if(y > 0) {
+        neigh.push(up);
+      } 
+      if(y < gridSize-1) {
+        neigh.push(down)
+      }
+      if(x > 0) {
+        neigh.push(left);
+      }
+      if(x < gridSize - 1) {
+        neigh.push(right)
+      }
+      return neigh
+    }
+  </script>
+
+</body>
+</html>
